@@ -1,9 +1,10 @@
 ######################################################
-# NORMALIZATION, DIMENSIONAL REDUCTION, CLUSTERING
+# NORMALIZE, DIMREDUC, CLUSTER
 #
 # GOAL: Create Seurat objects, prep and integrate all 
 # three batches of schizocardium scRNA-seq expression 
-# matrices.
+# matrices. Perform dimensional reduction (PCA and 
+# an UMAP) and cluster.
 ######################################################
 
 # ================= IMPORTS ==========================
