@@ -1,10 +1,9 @@
 ######################################################
-# NORMALIZE, DIMREDUC, CLUSTER
+# NORMALIZE DIMREDUC CLUSTER
 #
-# GOAL: Create Seurat objects, prep and integrate all 
-# three batches of schizocardium scRNA-seq expression 
-# matrices. Perform dimensional reduction (PCA and 
-# an UMAP) and cluster.
+# GOAL: Prep, integrate, and perform dimensional
+# reduction and clustering on all three batches of 
+# schizocardium scRNA-seq expression matrices.
 ######################################################
 
 # ================= IMPORTS ==========================
@@ -70,16 +69,16 @@ if (buildS3objects) {
     curr$timepoint <- setNames(factor(setNames(names(abbv),abbv)[substr(Cells(curr),1,2)],levels=allSamples),Cells(curr))
     curr$batch <- factor(batch,levels=1:4)
     curr <- SCTransform(curr,variable.features.n=3000,return.only.var.genes=FALSE)
-    saveRDS(curr,paste0('./data/seurat_objects/','batch_',batch,'.Rds'))
+    saveRDS(curr,paste0('./data/seurat_objects/','batch_',batch,'.rds'))
   }
 }
 
 # ================= DO PCA ==================
 
 if (rPCA) {
-  seuratList <- list(readRDS(paste0('./data/seurat_objects/','batch_1.Rds')),
-                     readRDS(paste0('./data/seurat_objects/','batch_2.Rds')),
-                     readRDS(paste0('./data/seurat_objects/','batch_3.Rds')))
+  seuratList <- list(readRDS(paste0('./data/seurat_objects/','batch_1.rds')),
+                     readRDS(paste0('./data/seurat_objects/','batch_2.rds')),
+                     readRDS(paste0('./data/seurat_objects/','batch_3.rds')))
   seuratList <- lapply(seuratList, function(x) {
     x@active.assay <- 'RNA'
     x <- NormalizeData(x)
@@ -96,15 +95,15 @@ if (rPCA) {
   
   anchors <- FindIntegrationAnchors(seuratList,anchor.features=features,reduction="rpca")
   integrated <- IntegrateData(anchorset=anchors,features.to.integrate=allfeat)
-  saveRDS(integrated,paste0('./data/seurat_objects/','rPCA_integrated.Rds'))
+  saveRDS(integrated,paste0('./data/seurat_objects/','rPCA_integrated.rds'))
   DefaultAssay(integrated) <- 'integrated'
   integrated <- ScaleData(integrated)
   integrated <- RunPCA(integrated,npcs=55)
   integrated <- RunUMAP(integrated,dims=1:55,n.neighbors=80)
   integrated <- FindNeighbors(integrated,dims=1:55)
   integrated <- FindClusters(integrated)
-  integrated$new_global_clusters <- factor(integrated$seurat_clusters)
+  integrated$global_clusters <- factor(integrated$seurat_clusters)
   integrated$sample <- paste(integrated$timepoint,integrated$batch,sep='_')
   integrated$sample <- factor(integrated$sample,levels=sampleLevels)
-  saveRDS(integrated,paste0('./data/seurat_objects/','rPCA_integrated.Rds'))
+  saveRDS(integrated,paste0('./data/seurat_objects/','rPCA_integrated.rds'))
 }
