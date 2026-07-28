@@ -59,7 +59,7 @@ lsb <- do.call(rbind,lapply(levels(seu$global_clusters),function(cl){
   return(df)
 }))
 lsb[lsb$cluster=='32','top'] <- 'intermediate'
-write.csv(lsb,'./data/cluster_livestage_composition.csv',row.names=FALSE)
+write.csv(lsb,'./data/cluster_lifestage_composition.csv',row.names=FALSE)
 
 seu$lifestage_bias <- lsb[as.character(seu$global_clusters),'top']
 seu$lifestage_bias <- factor(seu$lifestage_bias,levels=c('early','intermediate','late'))
