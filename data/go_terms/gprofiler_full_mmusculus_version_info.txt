@@ -1,0 +1,20 @@
+mmusculus (Mouse) - version: GRCm39
+
+GO:MF – annotations: BioMart
+classes: releases/2025-03-16
+GO:CC – annotations: BioMart
+classes: releases/2025-03-16
+GO:BP – annotations: BioMart
+classes: releases/2025-03-16
+KEGG – KEGG FTP Release 2024-01-22
+REAC – annotations: BioMart
+classes: 2025-5-23
+WP – 20250510
+TF – annotations: TRANSFAC Release 2024.2
+classes: v2
+MIRNA – Release 10.0
+HPA – annotations: HPA website: 24-10-19
+classes: script: 25-02-07
+CORUM – 28.11.2022 Corum 4.1
+HP – annotations: 05.2025
+classes: None
